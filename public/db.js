@@ -26,3 +26,9 @@ const indexedDB =
     request.onerror = function(event) {
         console.log( "nope, didn't like that " + event.target.errorCode);
     };
+
+    function saveRecord(record) {
+        const transaction = db.transaction(["pending"], "readwrite");
+        const store = transaction.objectStore("pending");
+        store.add(record)
+    }
