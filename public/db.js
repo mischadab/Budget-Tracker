@@ -22,3 +22,7 @@ const indexedDB =
             checkDatabase();
         }
     };
+
+    request.onerror = function(event) {
+        console.log( "nope, didn't like that " + event.target.errorCode);
+    };
