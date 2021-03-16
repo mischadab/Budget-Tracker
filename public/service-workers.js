@@ -20,4 +20,27 @@ self.addEventListener('install', event => {
             return cache.addAll(URLS_TO_CACHE)
         })
     )
+});
+
+// fetch cache
+self.addEventListener('fetch', event => {
+    const { url } = event.request;
+    if (url.includes("/api/")) {
+        event.respondWith(
+            caches.open(DATA_CACHE_NAME).then(cache => {
+                return fetch(url)
+                    .then(response => {
+                        // if response was good, clone it and store it in the cache
+                        if (response.status === 200) {
+                            cache.put(event.request, response.clone())
+                        }
+                        return response;
+                    })
+                    .catch(err => {
+                        return cache.match(url);
+                    });
+            })
+                .catch(err => console.log(err))
+        )
+    }
 })
