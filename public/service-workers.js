@@ -42,5 +42,14 @@ self.addEventListener('fetch', event => {
             })
                 .catch(err => console.log(err))
         )
-    }
+        return; 
+    } 
+    event.respondWith(
+        fetch(event.request).catch(function(){
+            return cache.match(event.request).then(response => {
+                return response;
+            })
+        })
+    )
 })
+
