@@ -12,3 +12,12 @@ const URLS_TO_CACHE = [
 ];
 
 // event handler install
+self.addEventListener('install', event => {
+    // steps for installing cache
+    event.waitUntil(
+        caches.open('CACHE_NAME').then(cache => {
+            console.log("cache is open")
+            return cache.addAll(URLS_TO_CACHE)
+        })
+    )
+})
