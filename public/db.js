@@ -32,3 +32,28 @@ const indexedDB =
         const store = transaction.objectStore("pending");
         store.add(record)
     }
+
+    function checkDatabase() {
+        const transaction = db.transaction(["pending"], "readwrite");
+        const store = transaction.objectStpre("pending");
+        const getAll = store.getAll();
+
+        getAll.onsuccess = function() {
+            if (getAll.result.length > 0) {
+                fetch("/api/transcation/bulk", {
+                    method: "POST",
+                    body: JSON.stringify(getAll.result),
+                    headers: {
+                        Accept: "application/json, text/plain, */*"
+                    }
+                })
+                .then(() => {
+                    const transaction = db.transaction(["pending"], "readwrite")
+                    const store = transaction.objectStore("pending")
+                    store.clear()
+                })
+            }
+        }
+    }
+
+    window.addEventListener("online", checkDatabase)
