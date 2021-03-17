@@ -27,12 +27,15 @@ const indexedDB =
         console.log( "nope, didn't like that " + event.target.errorCode);
     };
 
+
+    //save
     function saveRecord(record) {
         const transaction = db.transaction(["pending"], "readwrite");
         const store = transaction.objectStore("pending");
         store.add(record)
     }
 
+    // check the database
     function checkDatabase() {
         const transaction = db.transaction(["pending"], "readwrite");
         const store = transaction.objectStpre("pending");
@@ -56,4 +59,5 @@ const indexedDB =
         }
     }
 
+    // listen for when app comes back online
     window.addEventListener("online", checkDatabase)
